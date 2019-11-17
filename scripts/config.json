@@ -1,0 +1,16 @@
+{
+  "dbUrl": "127.0.0.1",
+  "dbLogin": { "username": "root", "password": "" },
+  "dbInstance": "role_management",
+  "dbConnectionLimit": 100,
+  "env": "DEV",
+  "port": "3306",
+  "unAuthorized": 401,
+  "ok": 200,
+  "notFound": 404,
+  "badRequest": 400,
+  "serverError": 500,
+  "alreadyExist": 409,
+  "notAcceptable": 406,
+  "methodNotAllowed": 405
+}
