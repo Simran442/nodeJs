@@ -8,37 +8,55 @@
 <body class="">
   <div class="wrapper ">
     <div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
-      <!--
-        Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
-
-        Tip 2: you can also add an image using data-image tag
-    -->
       <div class="logo">
         <a href="http://www.creative-tim.com" class="simple-text logo-normal">
-          Creative Tim
+          Role Management
         </a>
       </div>
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li class="nav-item  ">
-            <a class="nav-link" href="./dashboard">
+            <a class="nav-link" href="/api/dashboard">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
           </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="./users">
+          <li class="nav-item active ">
+            <a class="nav-link" href="/v1/ui/users">
               <i class="material-icons">person</i>
               <p>User Profile</p>
             </a>
           </li>
-          <li class="nav-item active ">
-            <a class="nav-link" href="./department">
+          <li class="nav-item  ">
+            <a class="nav-link" href="/v1/ui/department">
               <i class="material-icons">content_paste</i>
               <p>Department</p>
             </a>
           </li>
-
+          <li class="nav-item">
+            <a class="nav-link" href="/v1/ui/Performance">
+              <i class="material-icons">content_paste</i>
+              <p>Performance Matrix</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/v1/ui/SubPerformance">
+              <i class="material-icons">content_paste</i>
+              <p>Sub Performance Matrix</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="/api/matrixCalculation">
+              <i class="material-icons">content_paste</i>
+              <p>Calculation Matrix</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/api/users/timelog">
+              <i class="material-icons">content_paste</i>
+              <p>Add TimeLog</p>
+            </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -120,9 +138,8 @@
                 <div class="card-header card-header-primary">
                   <h4 class="card-title ">Users Table</h4>
                   <p class="card-category">List of all Users </p>
+                  <a href="/api/users/adduser"> <button id="btn" class="btn-user">Add User</button></a>
                 </div>
-                {{!-- <button type="button" id="nextBtn" class="btn btn-primary pull-right"
-                  onclick="nextPrev(1)">Next</button> --}}
                 <div class="card-body">
                   <div class="table-responsive">
                     <table class="table">
@@ -134,7 +151,7 @@
                           Email
                         </th>
                         <th>
-                          SecondaryId
+                          Full Name
                         </th>
                         <th>
                           Actions
@@ -145,18 +162,21 @@
                         {{#each result}}
                         <tr>
                           <td>
+                            {{@index}}
                           </td>
                           <td>
                             <b> {{this.email}} </b>
                           </td>
                           <td>
-                            <b> {{this.secondaryId}} </b>
+                            <b> {{this.firstName}} {{this.lastName}} </b>
                           </td>
                           <td>
-                            </a> <button id="btn">Edit</button></a>
+                            <a href="/api/users/editUsers/{{this.id}}"><button
+                                class="edit fa fa-pencil">Edit</button></a>
+                            </a> <button class="deleteUser fa fa-trash" value="{{this.id}}">Delete</button></a>
                           </td>
                           <td>
-                            <a href="/api/users/1"></a> <button id="btn">Delete</button></a>
+                            {{!-- <a href="/api/users/1"></a> <button id="btn">Delete</button></a> --}}
                           </td>
                         </tr>
                         {{/each}}
@@ -318,6 +338,7 @@
   <script src="../assets/js/plugins/arrive.min.js"></script>
   <!--  Google Maps Plugin    -->
   <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <!-- Chartist JS -->
   <script src="../assets/js/plugins/chartist.min.js"></script>
   <!--  Notifications Plugin    -->
@@ -326,7 +347,18 @@
   <script src="../assets/js/material-dashboard.js?v=2.1.1" type="text/javascript"></script>
   <!-- Material Dashboard DEMO methods, don't include it in your project! -->
   <script src="../assets/demo/demo.js"></script>
+
   <script>
+    $('.deleteUser').click(function () {
+      var userId = $(this).val();
+      alert(userId)
+      $.ajax({
+        url: "/api/users/" + userId,
+        method: 'delete',
+        success: function (result) {
+        }
+      });
+    });
     $(document).ready(function () {
       $().ready(function () {
         $sidebar = $('.sidebar');
@@ -358,6 +390,8 @@
             }
           }
         });
+
+
 
         $('.fixed-plugin .active-color span').click(function () {
           $full_page_background = $('.full-page-background');
@@ -497,6 +531,7 @@
       });
     });
   </script>
+
 </body>
 
 </html>

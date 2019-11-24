@@ -1,23 +1,23 @@
-var departmentModel = require("../models/department.js");
+var performanceModel = require("../models/performanceMatrix");
 var logger = require("../models/logger.js");
 var _ = require("underscore");
 var Q = require("q");
 var uuid = require("uuid");
 
 module.exports = {
-  addDepartment: function(req, res, next) {
-    if (!req.body.departmentName || !req.body.shortCode) {
+  addperformance: function(req, res, next) {
+    if (!req.body.name || !req.body.percentage) {
       res.statusCode = config.badRequest;
       return res.json({ result: appResource.badRequest });
     }
-    const data = {
+    var data = {
+      name: req.body.name,
+      isActive: 1,
       guid: uuid.v4(),
-      departmentName: req.body.departmentName,
-      shortCode: req.body.shortCode,
-      isActive: 1
+      percentage: req.body.percentage
     };
-    departmentModel
-      .addDepartment(data)
+    performanceModel
+      .addperformance(data)
       .then(
         function(result) {
           return res.json({
@@ -35,15 +35,53 @@ module.exports = {
       )
       .fail(logger.handleError);
   },
-
-  getDepartment: function(req, res, next) {
+  getperformances: function(req, res, next) {
+    performanceModel
+      .getperformances()
+      .then(
+        function(result) {
+          // console.log(">>>>>RES", result);
+          //res.render("matrix", { result: result });
+          return res.json({ result: appResource.success, data: result });
+        },
+        function(err) {
+          res.statusCode = config.serverError;
+          return res.json({
+            result: appResource.serverError,
+            statusText: "error"
+          });
+        }
+      )
+      .fail(logger.handleError);
+  },
+  getperformance: function(req, res, next) {
+    if (!req.params.matrixId) {
+      res.statusCode = config.badRequest;
+      return res.json({ result: appResource.badRequest });
+    }
+    performanceModel
+      .getperformance({ matrixId: req.params.id })
+      .then(
+        function(result) {
+          return res.json({ result: appResource.success, data: result });
+        },
+        function(err) {
+          res.statusCode = config.serverError;
+          return res.json({
+            result: appResource.serverError,
+            statusText: "error"
+          });
+        }
+      )
+      .fail(logger.handleError);
+  },
+  deleteperformance: function(req, res, next) {
     if (!req.params.id) {
       res.statusCode = config.badRequest;
       return res.json({ result: appResource.badRequest });
     }
-
-    departmentModel
-      .getDepartment({ id: req.params.id })
+    performanceModel
+      .deleteperformance({ id: req.params.id })
       .then(
         function(result) {
           return res.json({ result: appResource.success, data: result });
@@ -58,59 +96,14 @@ module.exports = {
       )
       .fail(logger.handleError);
   },
-  getDepartments: function(req, res, next) {
-    departmentModel
-      .getDepartments()
-      .then(
-        function(result) {
-          return res.json({ result: appResource.success, data: result });
-          //res.render("department", { result: result });
-        },
-        function(err) {
-          res.statusCode = config.serverError;
-          return res.json({
-            result: appResource.serverError,
-            statusText: "error"
-          });
-        }
-      )
-      .fail(logger.handleError);
-  },
-
-  editDepartment: function(req, res, next) {
-    if (!req.params.id || !req.body.departmentName) {
+  editPerformance: function(req, res, next) {
+    if (!req.params.id || !req.body.name) {
       res.statusCode = config.badRequest;
       return res.json({ result: appResource.badRequest });
     }
-
-    departmentModel
-      .editDepartment({
-        ...req.body,
-        id: parseInt(req.params.id)
-      })
-      .then(
-        function(result) {
-          return res.json({ result: appResource.success, data: result });
-        },
-        function(err) {
-          console.log("errr", err);
-          res.statusCode = config.serverError;
-          return res.json({
-            result: appResource.serverError,
-            statusText: "error"
-          });
-        }
-      )
-      .fail(logger.handleError);
-  },
-  deleteDepartment: function(req, res, next) {
-    if (!req.params.id) {
-      res.statusCode = config.badRequest;
-      return res.json({ result: appResource.badRequest });
-    }
-
-    departmentModel
-      .deleteDepartment({ id: req.params.id })
+    console.log("?>>>>>ACTIVE", req.body);
+    performanceModel
+      .editPerformance({ ...req.body, id: parseInt(req.params.id) })
       .then(
         function(result) {
           return res.json({ result: appResource.success, data: result });
@@ -125,18 +118,15 @@ module.exports = {
       )
       .fail(logger.handleError);
   },
-  adddepartment: function(req, res) {
-    res.render("adddepartment");
+  addPerformancePage: function(req, res, next) {
+    res.render("addperformance");
   },
-  editDepartmentPage: function(req, res) {
-    if (!req.params.id) {
-      res.statusCode = config.badRequest;
-      return res.json({ result: appResource.badRequest });
-    }
-    departmentModel.getDepartments({ id: req.params.id }).then(
+  editPerformancePage: function(req, res) {
+    performanceModel.getperformance({ id: req.params.id }).then(
       function(result) {
-        return res.render("editDepartment", { result });
+        return res.render("editPerformance", { result });
       },
+
       function(err) {
         res.statusCode = config.serverError;
         return res.json({
@@ -146,12 +136,13 @@ module.exports = {
       }
     );
   },
-  listDepartmentPage: function(req, res) {
-    departmentModel
-      .getDepartments()
+  getperformancePage: function(req, res, next) {
+    performanceModel
+      .getperformances()
       .then(
         function(result) {
-          res.render("department", { result: result });
+          // console.log(">>>>>RES", result);
+          res.render("matrix", { result: result });
           //return res.json({ result: appResource.success, data: result });
         },
         function(err) {

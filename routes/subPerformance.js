@@ -1,23 +1,25 @@
-var departmentModel = require("../models/department.js");
+var subperformanceModel = require("../models/subPerformanceMatrix");
+var performanceModel = require("../models/performanceMatrix");
 var logger = require("../models/logger.js");
 var _ = require("underscore");
 var Q = require("q");
-var uuid = require("uuid");
+const uuid = require("uuid/v4");
 
 module.exports = {
-  addDepartment: function(req, res, next) {
-    if (!req.body.departmentName || !req.body.shortCode) {
+  addsubperformance: function(req, res, next) {
+    if (!req.body.name) {
       res.statusCode = config.badRequest;
       return res.json({ result: appResource.badRequest });
     }
-    const data = {
+
+    var data = {
+      name: req.body.name,
+      isActive: 1,
       guid: uuid.v4(),
-      departmentName: req.body.departmentName,
-      shortCode: req.body.shortCode,
-      isActive: 1
+      parentId: parseInt(req.body.parentId)
     };
-    departmentModel
-      .addDepartment(data)
+    subperformanceModel
+      .addperformance(data)
       .then(
         function(result) {
           return res.json({
@@ -35,15 +37,31 @@ module.exports = {
       )
       .fail(logger.handleError);
   },
-
-  getDepartment: function(req, res, next) {
+  getsubperformances: function(req, res, next) {
+    subperformanceModel
+      .getsubperformances()
+      .then(
+        function(result) {
+          return res.json({ result: appResource.success, data: result });
+          //res.render("submatrix", { result: result });
+        },
+        function(err) {
+          res.statusCode = config.serverError;
+          return res.json({
+            result: appResource.serverError,
+            statusText: "error"
+          });
+        }
+      )
+      .fail(logger.handleError);
+  },
+  getsubperformance: function(req, res, next) {
     if (!req.params.id) {
       res.statusCode = config.badRequest;
       return res.json({ result: appResource.badRequest });
     }
-
-    departmentModel
-      .getDepartment({ id: req.params.id })
+    subperformanceModel
+      .getsubperformance({ id: req.params.id })
       .then(
         function(result) {
           return res.json({ result: appResource.success, data: result });
@@ -58,59 +76,40 @@ module.exports = {
       )
       .fail(logger.handleError);
   },
-  getDepartments: function(req, res, next) {
-    departmentModel
-      .getDepartments()
-      .then(
-        function(result) {
-          return res.json({ result: appResource.success, data: result });
-          //res.render("department", { result: result });
-        },
-        function(err) {
-          res.statusCode = config.serverError;
-          return res.json({
-            result: appResource.serverError,
-            statusText: "error"
-          });
-        }
-      )
-      .fail(logger.handleError);
-  },
-
-  editDepartment: function(req, res, next) {
-    if (!req.params.id || !req.body.departmentName) {
+  deletesubperformance: function(req, res, next) {
+    if (!req.params.id) {
       res.statusCode = config.badRequest;
       return res.json({ result: appResource.badRequest });
     }
-
-    departmentModel
-      .editDepartment({
+    subperformanceModel
+      .deletesubperformance({ id: req.params.id })
+      .then(
+        function(result) {
+          return res.json({ result: appResource.success, data: result });
+        },
+        function(err) {
+          res.statusCode = config.serverError;
+          return res.json({
+            result: appResource.serverError,
+            statusText: "error"
+          });
+        }
+      )
+      .fail(logger.handleError);
+  },
+  editsubPerformance: function(req, res, next) {
+    if (!req.params.id || !req.body) {
+      res.statusCode = config.badRequest;
+      return res.json({ result: appResource.badRequest });
+    }
+    console.log("req.params>>>>", req.params);
+    console.log(">>>>>SUB BODY", req.body);
+    subperformanceModel
+      .editsubPerformance({
         ...req.body,
         id: parseInt(req.params.id)
       })
-      .then(
-        function(result) {
-          return res.json({ result: appResource.success, data: result });
-        },
-        function(err) {
-          console.log("errr", err);
-          res.statusCode = config.serverError;
-          return res.json({
-            result: appResource.serverError,
-            statusText: "error"
-          });
-        }
-      )
-      .fail(logger.handleError);
-  },
-  deleteDepartment: function(req, res, next) {
-    if (!req.params.id) {
-      res.statusCode = config.badRequest;
-      return res.json({ result: appResource.badRequest });
-    }
 
-    departmentModel
-      .deleteDepartment({ id: req.params.id })
       .then(
         function(result) {
           return res.json({ result: appResource.success, data: result });
@@ -125,17 +124,34 @@ module.exports = {
       )
       .fail(logger.handleError);
   },
-  adddepartment: function(req, res) {
-    res.render("adddepartment");
+  addsubPerformancePage: async function(req, res, next) {
+    const submatrix = await performanceModel.getperformances();
+    console.log("SUBMATRIXXX>>", submatrix);
+    // let sub = [];
+    // submatrix.forEach(el => {
+    //   sub.push({ matrixId: el.matrixId, name: el.name });
+    // });
+    // console.log("IN ROUTE", sub);
+    res.render("addsubcategory", { submatrix });
   },
-  editDepartmentPage: function(req, res) {
-    if (!req.params.id) {
-      res.statusCode = config.badRequest;
-      return res.json({ result: appResource.badRequest });
-    }
-    departmentModel.getDepartments({ id: req.params.id }).then(
+  editSubPerformancePage: async function(req, res) {
+    const submatrix = await performanceModel.getperformances();
+    console.log("SUBMATRIX >>>>>", submatrix);
+    let sub = [];
+    submatrix.forEach(el => {
+      sub.push({ matrixId: el.id, name: el.name });
+    });
+    subperformanceModel.getsubperformance({ id: req.params.id }).then(
       function(result) {
-        return res.render("editDepartment", { result });
+        result[0].sub = sub;
+        console.log("Result>>>", result);
+        console.log("SUBBBBB>>>>", sub);
+        return res.render("editCategory", {
+          result: result,
+          selectedParentCategory: encodeURIComponent(
+            JSON.stringify(result[0].parentId)
+          )
+        });
       },
       function(err) {
         res.statusCode = config.serverError;
@@ -146,13 +162,13 @@ module.exports = {
       }
     );
   },
-  listDepartmentPage: function(req, res) {
-    departmentModel
-      .getDepartments()
+  subperformancePage: function(req, res, next) {
+    subperformanceModel
+      .getsubperformances()
       .then(
         function(result) {
-          res.render("department", { result: result });
           //return res.json({ result: appResource.success, data: result });
+          res.render("submatrix", { result: result });
         },
         function(err) {
           res.statusCode = config.serverError;

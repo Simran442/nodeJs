@@ -1,0 +1,635 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "",
+    "version": "1.0.2",
+    "title": "IP Snapshot",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "apiteam@swagger.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:3000",
+  "basePath": "",
+  "tags": [
+    {
+      "name": "user",
+      "description": "Operations about user"
+    },
+    {
+      "name": "Department",
+      "description": " Operations about Department"
+    },
+    {
+      "name": "Performance",
+      "description": "Operations about Performance Matrix"
+    },
+    {
+      "name": "Sub-Performance",
+      "description": "Operations about Sub-Performance Matrix"
+    }
+  ],
+  "schemes": ["http"],
+  "paths": {
+    "/api/department": {
+      "get": {
+        "tags": ["Department"],
+        "summary": "List of all Departments",
+        "description": "List of all departments",
+        "operationId": "getDepartment",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Please FIll all fields correctly"
+          },
+          "200": {
+            "description": "Success with data"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Department"],
+        "summary": " New department",
+        "description": "Add a new department into db",
+        "operationId": "addDepartment",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": ["departmentName"],
+            "schema": {
+              "$ref": "#/definitions/Department"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Please fill all fields correctly"
+          },
+          "200": {
+            "description": "Success with data"
+          }
+        }
+      }
+    },
+    "/api/department/{id}": {
+      "delete": {
+        "tags": ["Department"],
+        "summary": "Delete department by ID",
+        "description": "",
+        "operationId": "deleteOrder",
+        "produces": ["application/xml", "application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the department that needs to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Please fill all fields correctly"
+          },
+          "200": {
+            "description": "Success with data"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Department"],
+        "summary": " Edit department",
+        "description": "Edit department information into db",
+        "operationId": "patchDepartment",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the department that needs to be modified",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": ["departmentName"],
+            "schema": {
+              "$ref": "#/definitions/Department"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Please fill all fields correctly"
+          },
+          "200": {
+            "description": "Success with data"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Department"],
+        "summary": "Get Departments by Id",
+        "description": "List of departments on the basis of ID",
+        "operationId": "getAllUserData Matrix",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the department for getting department nnfo by ID .",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Please FIll all fields correctly"
+          },
+          "200": {
+            "description": "Success with data"
+          }
+        }
+      }
+    },
+    "/api/users": {
+      "get": {
+        "tags": ["user"],
+        "summary": "List of all Users",
+        "description": "List of all Users",
+        "operationId": "getUsers",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Please FIll all fields correctly"
+          },
+          "200": {
+            "description": "Success with data"
+          }
+        }
+      },
+      "post": {
+        "tags": ["user"],
+        "summary": " New User",
+        "description": "Add a new user into db",
+        "operationId": "addUser",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User that needs to be added to the store",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Users"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Please fill all fields correctly"
+          },
+          "200": {
+            "description": "Success with data"
+          }
+        }
+      }
+    },
+    "/api/users/{id}": {
+      "delete": {
+        "tags": ["user"],
+        "summary": "Delete user by ID(set active=0)",
+        "description": "",
+        "operationId": "deleteUser",
+        "produces": ["application/xml", "application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the user that needs to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Please fill all fields correctly"
+          },
+          "200": {
+            "description": "Success with data"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["user"],
+        "summary": " Edit user",
+        "description": "Edit user information into db",
+        "operationId": "patchUser",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the user that needs to be modified",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/EditUsers"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Please fill all fields correctly"
+          },
+          "200": {
+            "description": "Success with data"
+          }
+        }
+      },
+      "get": {
+        "tags": ["user"],
+        "summary": "Get Users by Id",
+        "description": "List of Users data with departments & Permissions",
+        "operationId": "getAllUserData Matrix",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the user for getting all the information.",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Please FIll all fields correctly"
+          },
+          "200": {
+            "description": "Success with data"
+          }
+        }
+      }
+    },
+    "/api/Performance": {
+      "get": {
+        "tags": ["Performance"],
+        "summary": "List of all Performance Matrix",
+        "description": "List of all Performance Matrix",
+        "operationId": "getPerformance Matrix",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Please FIll all fields correctly"
+          },
+          "200": {
+            "description": "Success with data"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Performance"],
+        "summary": " New Performance Matrix",
+        "description": "Add a new performance matrix into db",
+        "operationId": "addPerformance",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Performance that needs to be added to the store",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Performance"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Please fill all fields correctly"
+          },
+          "200": {
+            "description": "Success with data"
+          }
+        }
+      }
+    },
+    "/api/Performance/{id}": {
+      "delete": {
+        "tags": ["Performance"],
+        "summary": "Delete Performance Matrix by ID(set active=0)",
+        "description": "",
+        "operationId": "deletePerformanceMatrix",
+        "produces": ["application/xml", "application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the performance matrix that needs to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Please fill all fields correctly"
+          },
+          "200": {
+            "description": "Success with data"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Performance"],
+        "summary": " Edit Performance Matrix",
+        "description": "Edit matrix information into db",
+        "operationId": "patchPerformance",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the performance matrix that needs to be modified",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Performance"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Please fill all fields correctly"
+          },
+          "200": {
+            "description": "Success with data"
+          }
+        }
+      }
+    },
+    "/api/SubPerformance": {
+      "get": {
+        "tags": ["Sub-Performance"],
+        "summary": "List of all Sub-Performances",
+        "description": "List of all sub Performance Matrix",
+        "operationId": "getSubPerformance Matrix",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Please FIll all fields correctly"
+          },
+          "200": {
+            "description": "Success with data"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Sub-Performance"],
+        "summary": " New Sub-Performance Matrix",
+        "description": "Add a new sub-performance matrix into db",
+        "operationId": "addPerformance",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Performance that needs to be added to the store",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/subPerformance"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Please fill all fields correctly"
+          },
+          "200": {
+            "description": "Success with data"
+          }
+        }
+      }
+    },
+    "/api/SubPerformance/{id}": {
+      "delete": {
+        "tags": ["Sub-Performance"],
+        "summary": "Delete Sub-Performance Matrix by ID(set active=0)",
+        "description": "",
+        "operationId": "delete Sub-PerformanceMatrix",
+        "produces": ["application/xml", "application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of sub-performance matrix that needs to be deleted",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Please fill all fields correctly"
+          },
+          "200": {
+            "description": "Success with data"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Sub-Performance"],
+        "summary": " Edit Sub-Performance Matrix",
+        "description": "Edit Sub matrix information into db",
+        "operationId": "patchPerformance",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": " Sub-performance ID that needs to be dodified",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/subPerformance"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Please fill all fields correctly"
+          },
+          "200": {
+            "description": "Success with data"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "petstore_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "https://petstore.swagger.io/oauth/authorize",
+      "flow": "implicit",
+      "scopes": {
+        "write:pets": "modify pets in your account",
+        "read:pets": "read your pets"
+      }
+    },
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "Department": {
+      "type": "object",
+      "properties": {
+        "departmentName": {
+          "type": "string"
+        },
+        "shortCode": {
+          "type": "string"
+        },
+        "isActive": {
+          "type": "integer"
+        }
+      }
+    },
+    "Users": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "departmentId": {
+          "type": "integer"
+        }
+      }
+    },
+    "EditUsers": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "departmentId": {
+          "type": "integer"
+        },
+        "permissionId": {
+          "type": "integer"
+        },
+        "isActive": {
+          "type": "integer"
+        }
+      }
+    },
+    "Performance": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "percentage": {
+          "type": "integer"
+        },
+        "isActive": {
+          "type": "integer"
+        }
+      }
+    },
+    "subPerformance": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "parentId": {
+          "type": "integer"
+        },
+        "isActive": {
+          "type": "integer"
+        }
+      }
+    },
+    "ApiResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "externalDocs": {}
+}

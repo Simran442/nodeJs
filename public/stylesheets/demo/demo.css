@@ -31,7 +31,7 @@
 
 .offline-doc .navbar.navbar-transparent .navbar-brand,
 .offline-doc .navbar.navbar-transparent .collapse .navbar-nav .nav-link {
-  color: #FFFFFF !important;
+  color: #ffffff !important;
 }
 
 .offline-doc .footer {
@@ -59,3 +59,39 @@
   height: calc(100vh - 70px);
   margin-top: 70px;
 }
+.card .card-header-primary .card-icon,
+.card .card-header-primary .card-text,
+.card .card-header-primary:not(.card-header-icon):not(.card-header-text),
+.card.bg-primary,
+.card.card-rotate.bg-primary .front,
+.card.card-rotate.bg-primary .back {
+  background: linear-gradient(60deg, #ccba66, #24a4aa);
+  color: black;
+}
+.text-primary {
+  color: #b06d27 !important;
+}
+
+.sidebar[data-color="purple"] li.active > a {
+  background: linear-gradient(60deg, #ccba66, #24a4aa);
+}
+.btn-user {
+  float: right;
+}
+/* .editbutton {
+  border: none;
+  padding: 10px 10px;
+  cursor: pointer;
+} */
+/* .deleteDepartment {
+  border: none;
+  padding: 10px 10px;
+  cursor: pointer;
+}
+.department-button {
+  max-width: 140px;
+  margin-left: 15px;
+  margin-bottom: 20px;
+  border: none;
+  padding: 9px 0px;
+} */

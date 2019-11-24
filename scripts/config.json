@@ -1,16 +1,19 @@
 {
   "dbUrl": "127.0.0.1",
   "dbLogin": { "username": "root", "password": "" },
-  "dbInstance": "role_management",
+  "dbInstance": "ip_snapshot",
   "dbConnectionLimit": 100,
   "env": "DEV",
   "port": "3306",
   "unAuthorized": 401,
+  "startTime": "9:45",
   "ok": 200,
   "notFound": 404,
   "badRequest": 400,
   "serverError": 500,
   "alreadyExist": 409,
   "notAcceptable": 406,
-  "methodNotAllowed": 405
+  "methodNotAllowed": 405,
+  "sessionMaxAge": 2592000000,
+  "passportSecret": "ecbcwCwTUhciSbZ6IVxAlyotyeK9pnDw"
 }

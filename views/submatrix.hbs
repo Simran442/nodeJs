@@ -29,25 +29,25 @@
               <p>User Profile</p>
             </a>
           </li>
-          <li class="nav-item active ">
+          <li class="nav-item  ">
             <a class="nav-link" href="/v1/ui/department">
               <i class="material-icons">content_paste</i>
               <p>Department</p>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item  ">
             <a class="nav-link" href="/v1/ui/Performance">
               <i class="material-icons">content_paste</i>
               <p>Performance Matrix</p>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active ">
             <a class="nav-link" href="/v1/ui/SubPerformance">
               <i class="material-icons">content_paste</i>
               <p>Sub Performance Matrix</p>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item ">
             <a class="nav-link" href="/api/matrixCalculation">
               <i class="material-icons">content_paste</i>
               <p>Calculation Matrix</p>
@@ -145,9 +145,10 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header card-header-primary">
-                  <h4 class="card-title ">Department Table</h4>
-                  <p class="card-category">List of all departments </p>
-                  <a href="/api/department/adddepartment"> <button id="btn" class="btn-user">Add Department</button></a>
+                  <h4 class="card-title "> Sub Performance Matrix</h4>
+                  <p class="card-category">List of sub Performance Matrix </p>
+                  <a href="/api/subPerformance/addsubperformances"> <button id="btn" class="btn-user">Add
+                      Sub-Performance</button></a>
                   {{!-- <button id="btn">Add Dept.</button> --}}
                 </div>
 
@@ -160,13 +161,7 @@
                           Sr.No.
                         </th>
                         <th>
-                          DepartmentName
-                        </th>
-                        <th>
-                          Short Code
-                        </th>
-                        <th>
-                          isActive
+                          Name
                         </th>
                         <th>
                           Actions
@@ -179,20 +174,14 @@
                             {{@index}}
                           </td>
                           <td>
-                            <b> {{this.departmentName}} </b>
+                            <b> {{this.name}} </b>
                           </td>
                           <td>
-                            <b>{{this.shortCode}} </b>
-                          </td>
-                          <td>
-                            <b>{{this.isActive}} </b>
-                          </td>
-                          <td>
-                            <a href="/api/department/edit/{{this.id}}"> <button class="editbutton fa fa-pencil"
+                            <a href="/api/subPerformance/editt/{{this.id}}"> <button class="editbutton fa fa-pencil"
                                 id="btn">Edit</button></a>
                           </td>
                           <td>
-                            </a> <button class="deleteDepartment fa fa-trash" value="{{this.id}}">Delete</button></a>
+                            </a> <button class="deletesubperformance fa fa-trash" value={{this.id}}>Deleted</button></a>
 
                           </td>
                         </tr>
@@ -334,13 +323,12 @@
   <!-- Material Dashboard DEMO methods, don't include it in your project! -->
   <script src="../assets/demo/demo.js"></script>
   <script>
-    $('.deleteDepartment').click(function () {
-      var deptId = $(this).val();
+    $('.deletesubperformance').click(function () {
+      var id = $(this).val();
       $.ajax({
-        url: "/api/department/" + deptId,
+        url: "/api/subPerformance/" + id,
         method: 'delete',
         success: function (result) {
-          window.location.reload();
         }
       });
     });

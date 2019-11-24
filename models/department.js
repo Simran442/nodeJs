@@ -5,40 +5,47 @@ var _ = require("underscore");
 module.exports = {
   addDepartment: function(data) {
     var query =
-      "INSERT INTO department(deptName,shortCode,deptDesc,secondaryId) VALUES(:deptName,:shortCode,:deptDesc,:secondaryId)";
+      "INSERT INTO tbldepartments(guid, departmentName, shortCode, isActive, createdOn) VALUES(:guid, :departmentName, :shortCode, :isActive, now())";
     return utility.query(query, data);
   },
   getDepartment: function(data) {
     var query =
-      "SELECT id as deptId,deptName,shortCode,deptDesc,secondaryId,isActive, lastUpdated, createdOn FROM department";
-    if (data && data.deptId) {
-      query += " WHERE id = :deptId";
+      "SELECT id as deptId,departmentName,shortCode,guid,isActive, createdOn FROM tbldepartments";
+    if (data && data.id) {
+      query += " WHERE id = :id";
     }
     return utility.query(query, data);
   },
   getDepartments: function(data) {
     var query =
-      "SELECT deptId,deptName,shortCode,deptDesc,secondaryId,isActive, lastUpdated, createdOn FROM department";
+      "SELECT id, departmentName, shortCode, (Case When isActive=1 Then 1 Else 0 End) AS isActive FROM tbldepartments";
+    if (data && data.id) {
+      query += " WHERE id = :id";
+    }
     return utility.query(query, data);
   },
 
   editDepartment: function(data) {
-    var query = "UPDATE department SET";
-    if (data && data.deptName) {
-      query += " deptName = :deptName,";
+    var query = "UPDATE tbldepartments SET";
+    if (data && data.departmentName) {
+      query += " departmentName = :departmentName,";
     }
-    if (data && data.deptDesc) {
-      query += " deptDesc = :deptDesc";
-    }
+
     if (data && data.shortCode) {
-      query += " shortCode = :shortCode";
+      query += " shortCode = :shortCode,";
     }
-    query += " WHERE id=:deptId";
+    if (data && "isActive" in data) {
+      query += " isActive = :isActive";
+    }
+
+    if (data && data.id) {
+      query += " WHERE id=:id";
+    }
     return utility.query(query, data);
   },
 
   deleteDepartment: function(data) {
-    var query = "DELETE FROM department WHERE id = :deptId";
+    var query = "UPDATE tbldepartments SET isActive = 0 WHERE id = :id";
     return utility.query(query, data);
   }
 };

@@ -5,5 +5,7 @@
     "unauthorized": "Unauthorised user",
     "badRequestMsg" : "Bad request",
     "badRequest": "Fill all required fields correctly",
-    "notFound": "API not found"
+    "notFound": "API not found",
+    "shortPassword": "shortPassword",
+    "successRegister": "successRegister"
 }
